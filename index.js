@@ -38,6 +38,11 @@ function processCommand(command) {
             let res = [];
             for (let file_res of todos){
                 res.push(file_res.filter((word) => word.split(';')[0].split(" ")[2] === arg));
+        case 'important':
+            let res = []
+            let toDo = getToDos()
+            for (let file_string of toDo) {
+                res.push(file_string.filter(str => str.includes("!")))
             }
             console.log(res);
             process.exit(0);
