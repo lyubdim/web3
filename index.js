@@ -22,6 +22,11 @@ function getToDos(){
 }
 
 
+function getUserComments(todos, userName){
+    return todos.filter((word) => word.split(';')[0].split(" ")[2] === userName);
+}
+
+
 function processCommand(command) {
     cmd = command.split(" ")[0]
     let res = [];
@@ -36,8 +41,7 @@ function processCommand(command) {
         case "user":
             let todos = getToDos();
             let arg = command.split(" ")[1];
-            res = [];
-            console.log(todos.filter((word) => word.split(';')[0].split(" ")[2] === arg));
+            console.log(getUserComments(todos, arg));
             process.exit(0);
             break;
         case 'important':
@@ -47,15 +51,20 @@ function processCommand(command) {
             process.exit(0);
             break;
         case "sort":
-            arg = command.split(" ")[1];
-            switch (arg){
+            let arg2 = command.split(" ")[1];
+            switch (arg2){
                 case "importance":
                     break;
                 case "user":
+                    let todos = getToDos();
+                    let userComments = todos.filter(word => word.split(";").length === 3 && word.split(";")[0].split(" ").length > 2).sort();
+                    console.log(userComments);
+                    console.log(todos.filter(word => !userComments.includes(word)));
                     break;
                 case "date":
                     break;
             }
+            break;
         default:
             console.log('wrong command');
             break;

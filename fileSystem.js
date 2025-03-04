@@ -21,6 +21,7 @@ function readFile(filePath) {
 }
 
 // TODO Digi; 2018-09-21; Добавить функцию getFileName, которая по пути файла будет возвращать его имя. Воспользоваться модулем path из Node.js
+// TODO Digi; 2018-09-22; smth
 
 module.exports = {
     getAllFilePathsWithExtension,
