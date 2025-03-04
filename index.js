@@ -62,6 +62,19 @@ function processCommand(command) {
                     console.log(todos.filter(word => !userComments.includes(word)));
                     break;
                 case "date":
+                    let temp_res = getToDos().filter(word => word.split(";").length === 3).sort((word1, word2) => {
+                        let date1 = new Date(word1.split(";")[1]);
+                        let date2 = new Date(word2.split(";")[1]);
+                        if (date1 === date2){
+                            return 0;
+                        }
+                        if (date1 > date2){
+                            return -1;
+                        }
+                        return 1;
+                    });
+                    console.log(temp_res);
+                    console.log(getToDos().filter(word => !temp_res.includes(word)));
                     break;
             }
             break;
