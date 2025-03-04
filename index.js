@@ -16,7 +16,7 @@ function getToDos(){
     let todos = getFiles();
     let res = [];
     for (let file_string of todos){
-        res.push(file_string.split('\r\n').filter((word) => word.trim().includes("// TODO")).map(word => word.slice(word.indexOf("//"))));
+        res.push(...file_string.split('\r\n').filter((word) => word.trim().includes("// TODO")).map(word => word.slice(word.indexOf("//"))));
     }
     return res;
 }
@@ -37,21 +37,25 @@ function processCommand(command) {
             let todos = getToDos();
             let arg = command.split(" ")[1];
             res = [];
-            for (let file_res of todos){
-                res.push(file_res.filter((word) => word.split(';')[0].split(" ")[2] === arg));
-            }
-            console.log(res);
+            console.log(todos.filter((word) => word.split(';')[0].split(" ")[2] === arg));
             process.exit(0);
             break;
         case 'important':
             res = []
             let toDo = getToDos()
-            for (let file_string of toDo) {
-                res.push(file_string.filter(str => str.includes("!")))
-            }
-            console.log(res);
+            console.log(toDo.filter(str => str.includes("!")));
             process.exit(0);
             break;
+        case "sort":
+            arg = command.split(" ")[1];
+            switch (arg){
+                case "importance":
+                    break;
+                case "user":
+                    break;
+                case "date":
+                    break;
+            }
         default:
             console.log('wrong command');
             break;
