@@ -12,10 +12,10 @@ function getFiles() {
 }
 
 
-function getToDos() {
+function getToDos(){
     let todos = getFiles();
     let res = [];
-    for (let file_string of todos) {
+    for (let file_string of todos){
         res.push(...file_string.split('\r\n').filter((word) => word.trim().includes("// TODO")).map(word => word.slice(word.indexOf("//"))));
     }
     return res;
@@ -24,6 +24,11 @@ function getToDos() {
 function getExclamationString() {
     let toDo = getToDos()
     return toDo.filter(str => str.includes("!"));
+}
+
+
+function getUserComments(todos, userName){
+    return todos.filter((word) => word.split(';')[0].split(" ")[2] === userName);
 }
 
 
@@ -41,8 +46,7 @@ function processCommand(command) {
         case "user":
             let todos = getToDos();
             let arg = command.split(" ")[1];
-            res = [];
-            console.log(todos.filter((word) => word.split(';')[0].split(" ")[2] === arg));
+            console.log(getUserComments(todos, arg));
             process.exit(0);
             break;
         case 'important':
@@ -51,7 +55,7 @@ function processCommand(command) {
             break;
         case "sort":
             let arg2 = command.split(" ")[1];
-            switch (arg2) {
+            switch (arg2){
                 case "importance":
                     let strings = getExclamationString();
                     const sortedStrings = strings.sort((a, b) => {
@@ -60,21 +64,21 @@ function processCommand(command) {
                         return countB - countA;
                     });
                     console.log(sortedStrings);
-                        break;
-                case
-                    "user"
-                :
                     break;
-                case
-                    "date"
-                :
+                case "user":
+                    let todos = getToDos();
+                    let userComments = todos.filter(word => word.split(";").length === 3 && word.split(";")[0].split(" ").length > 2).sort();
+                    console.log(userComments);
+                    console.log(todos.filter(word => !userComments.includes(word)));
                     break;
-                }
-                break;
-            default:
-                console.log('wrong command');
-                break;
-        }
+                case "date":
+                    break;
+            }
+            break;
+        default:
+            console.log('wrong command');
+            break;
     }
+}
 
 // TODO you can do it!
