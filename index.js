@@ -24,6 +24,7 @@ function getToDos(){
 
 function processCommand(command) {
     cmd = command.split(" ")[0]
+    let res = [];
     switch (cmd) {
         case 'exit':
             process.exit(0);
@@ -35,11 +36,15 @@ function processCommand(command) {
         case "user":
             let todos = getToDos();
             let arg = command.split(" ")[1];
-            let res = [];
+            res = [];
             for (let file_res of todos){
                 res.push(file_res.filter((word) => word.split(';')[0].split(" ")[2] === arg));
+            }
+            console.log(res);
+            process.exit(0);
+            break;
         case 'important':
-            let res = []
+            res = []
             let toDo = getToDos()
             for (let file_string of toDo) {
                 res.push(file_string.filter(str => str.includes("!")))
