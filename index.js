@@ -32,6 +32,22 @@ function getUserComments(todos, userName){
 }
 
 
+function printTable(table){
+    let max1column = 0;
+    let max2column = 0;
+    let max3column = 0;
+    for (let line of table){
+        max1column = Math.max(max1column, line.split(';')[0].trim().length);
+        max2column = Math.max(max2column, line.split(';')[1].trim().length);
+        max3column = Math.max(max3column, line.split(';')[2].trim().length);
+    }
+    console.log(` !  | ${"user".padEnd(max1column, " ")} | ${ "date".padEnd(max2column, " ")} | ${"comment".padEnd(max3column, " ")}`);
+    for (let line of table){
+        console.log(` ${ line.includes('!') ? "!" : " " }  | ${line.split(";")[0].trim().padEnd(max1column, " ")} | ${line.split(";")[1].trim().padEnd(max2column, " ")} | ${line.split(";")[2].trim().padEnd(max3column, " ")}`);
+    }
+}
+
+
 function processCommand(command) {
     cmd = command.split(" ")[0]
     let res = [];
@@ -46,7 +62,7 @@ function processCommand(command) {
         case "user":
             let todos = getToDos();
             let arg = command.split(" ")[1];
-            console.log(getUserComments(todos, arg));
+            printTable(getUserComments(todos, arg));
             process.exit(0);
             break;
         case 'important':
@@ -68,7 +84,7 @@ function processCommand(command) {
                 case "user":
                     let todos = getToDos();
                     let userComments = todos.filter(word => word.split(";").length === 3 && word.split(";")[0].split(" ").length > 2).sort();
-                    console.log(userComments);
+                    printTable(userComments);
                     console.log(todos.filter(word => !userComments.includes(word)));
                     break;
                 case "date":
@@ -83,7 +99,7 @@ function processCommand(command) {
                         }
                         return 1;
                     });
-                    console.log(temp_res);
+                    printTable(temp_res);
                     console.log(getToDos().filter(word => !temp_res.includes(word)));
                     break;
             }
@@ -95,3 +111,4 @@ function processCommand(command) {
 }
 
 // TODO you can do it!
+
