@@ -11,16 +11,29 @@ function getFiles() {
     return filePaths.map(path => readFile(path));
 }
 
+function getToDos() {
+    let todos = getFiles();
+    let res = [];
+    for (let file_string of todos) {
+        res.push(file_string.split('\r\n').filter((word) => word.trim().startsWith("// TODO")));
+    }
+    return res;
+}
+
 function processCommand(command) {
     switch (command) {
         case 'exit':
             process.exit(0);
             break;
         case 'show':
-            let todos = getFiles();
-            res = [];
-            for (let file_string of todos){
-                res.push(file_string.split('\r\n').filter((word) => word.trim().startsWith("// TODO")));
+            console.log(getToDos());
+            process.exit(0);
+            break;
+        case 'important':
+            let res = []
+            let toDo = getToDos()
+            for (let file_string of toDo) {
+                res.push(file_string.filter(str => str.includes("!")))
             }
             console.log(res);
             process.exit(0);
