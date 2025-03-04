@@ -21,6 +21,11 @@ function getToDos(){
     return res;
 }
 
+function getExclamationString() {
+    let toDo = getToDos()
+    return toDo.filter(str => str.includes("!"));
+}
+
 
 function getUserComments(todos, userName){
     return todos.filter((word) => word.split(';')[0].split(" ")[2] === userName);
@@ -37,7 +42,7 @@ function processCommand(command) {
         case 'show':
             console.log(getToDos());
             process.exit(0);
-            break;
+            break;   // TODO digi; 2016-04-08; добавить writeLine!!!!!
         case "user":
             let todos = getToDos();
             let arg = command.split(" ")[1];
@@ -45,15 +50,20 @@ function processCommand(command) {
             process.exit(0);
             break;
         case 'important':
-            res = []
-            let toDo = getToDos()
-            console.log(toDo.filter(str => str.includes("!")));
+            console.log(getExclamationString());
             process.exit(0);
             break;
         case "sort":
             let arg2 = command.split(" ")[1];
             switch (arg2){
                 case "importance":
+                    let strings = getExclamationString();
+                    const sortedStrings = strings.sort((a, b) => {
+                        const countA = a.split('!').length - 1;
+                        const countB = b.split('!').length - 1;
+                        return countB - countA;
+                    });
+                    console.log(sortedStrings);
                     break;
                 case "user":
                     let todos = getToDos();
